@@ -12,14 +12,14 @@ set(CLANG_MINIMUM_VERSION "3.4")
 set(VERSION_MAJOR 5)
 set(VERSION_MINOR 5)
 set(VERSION_PATCH 0)
-set(VERSION_EXTRA "" CACHE STRING "Stuff to append to version string")
+set(VERSION_EXTRA "dynamic_light" CACHE STRING "Stuff to append to version string")
 
 # Change to false for releases
 set(DEVELOPMENT_BUILD TRUE)
 
 set(VERSION_STRING "${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}")
 if(VERSION_EXTRA)
-	set(VERSION_STRING ${VERSION_STRING}-${VERSION_EXTRA})
+	set(VERSION_STRING "${VERSION_STRING}-${VERSION_EXTRA}")
 elseif(DEVELOPMENT_BUILD)
 	set(VERSION_STRING "${VERSION_STRING}-dev")
 endif()
