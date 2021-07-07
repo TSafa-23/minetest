@@ -190,6 +190,7 @@ void ItemDefinition::deSerialize(std::istream &is)
 	stack_max = readS16(is);
 	usable = readU8(is);
 	liquids_pointable = readU8(is);
+	light_radius = readF32(is);
 
 	std::string tool_capabilities_s = deSerializeString16(is);
 	if (!tool_capabilities_s.empty()) {
@@ -221,7 +222,6 @@ void ItemDefinition::deSerialize(std::istream &is)
 	// If you add anything here, insert it primarily inside the try-catch
 	// block to not need to increase the version.
 	try {
-		light_radius = readF32(is);
 		short_description = deSerializeString16(is);
 
 		place_param2 = readU8(is); // 0 if missing
