@@ -4,6 +4,8 @@ uniform vec4 skyBgColor;
 uniform float fogDistance;
 uniform vec3 eyePosition;
 
+uniform float mLightRadius;
+
 // The cameraOffset is the current center of the visible world.
 uniform vec3 cameraOffset;
 uniform float animationTimer;
@@ -451,7 +453,9 @@ vec4 applyToneMapping(vec4 color)
 }
 #endif
 
-
+vec3 applyBrightness(vec3 base, vec3 col, float amount) { // WIP function, works but not greatly
+	return col + (base * amount);
+}
 
 void main(void)
 {
@@ -521,6 +525,14 @@ void main(void)
 		- fogShadingParameter * length(eyeVec) / fogDistance, 0.0, 1.0);
 	col = mix(skyBgColor, col, clarity);
 	col = vec4(col.rgb, base.a);
+
+
+	// Dynamic lighting
+
+	float lightRange = gl_FragCoord.w * gl_FragCoord.z * mLightRadius;
+	col = vec4(applyBrightness(base.rgb, col.rgb, lightRange), base.a);
+
+	// Dynamic lighting end
 	
 	gl_FragColor = col;
 }
