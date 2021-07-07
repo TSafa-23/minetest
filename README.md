@@ -7,6 +7,15 @@ Minetest
 
 Minetest is a free open-source voxel game engine with easy modding and game creation.
 
+*[Dynamic lights!]*
+If you wish to test, add the property `light_radius` (float value, F32) to an itemdef and wield the item.
+
+To do:
+- Entities
+- Wielded item
+- Proper brightening
+- Colored light
+
 Copyright (C) 2010-2020 Perttu Ahola <celeron55@gmail.com>
 and contributors (see source file comments and the version control log)
 
