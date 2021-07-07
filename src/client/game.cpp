@@ -72,6 +72,9 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "version.h"
 #include "script/scripting_client.h"
 #include "hud.h"
+#include "light_radius.h"
+
+float light_radius;
 
 #if USE_SOUND
 	#include "client/sound_openal.h"
@@ -528,6 +531,7 @@ public:
 		SamplerLayer_t base_tex = 0, normal_tex = 1;
 		m_base_texture.set(&base_tex, services);
 		m_normal_texture.set(&normal_tex, services);
+
 	}
 };
 
@@ -679,6 +683,7 @@ protected:
 	void updateBasicDebugState();
 	void updateStats(RunStats *stats, const FpsControl &draw_times, f32 dtime);
 	void updateProfilerGraphs(ProfilerGraph *graph);
+	void updateLightRadius();
 
 	// Input related
 	void processUserInput(f32 dtime);
@@ -1089,6 +1094,7 @@ void Game::run()
 			g_settings->setU16("screen_h", current_screen_size.Height);
 			previous_screen_size = current_screen_size;
 		}
+		updateLightRadius();
 
 		// Calculate dtime =
 		//    m_rendering_engine->run() from this iteration
@@ -2553,6 +2559,14 @@ inline void Game::step(f32 *dtime)
 
 		client->step(*dtime);
 	}
+}
+
+void Game::updateLightRadius() {
+		ItemStack wielditem;
+		wielditem = client->getEnv().getLocalPlayer()->getWieldedItem(&wielditem, nullptr);
+		ItemDefinition wielddef = wielditem.getDefinition(client->getItemDefManager());
+		
+		light_radius = wielddef.light_radius;
 }
 
 static void pauseNodeAnimation(PausedNodesList &paused, scene::ISceneNode *node) {
