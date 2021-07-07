@@ -39,6 +39,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "gamedef.h"
 #include "client/tile.h"
 #include "config.h"
+#include "light_radius.h"
 
 #if ENABLE_GLES
 #ifdef _IRR_COMPILE_WITH_OGLES1_
@@ -225,6 +226,8 @@ class MainShaderConstantSetter : public IShaderConstantSetter
 {
 	CachedVertexShaderSetting<float, 16> m_world_view_proj;
 	CachedVertexShaderSetting<float, 16> m_world;
+	// Dynamic Light
+	CachedVertexShaderSetting<float> m_light_radius;
 
 	// Shadow-related
 	CachedPixelShaderSetting<float, 16> m_shadow_view_proj;
@@ -248,6 +251,7 @@ public:
 	MainShaderConstantSetter() :
 		  m_world_view_proj("mWorldViewProj")
 		, m_world("mWorld")
+		, m_light_radius("mLightRadius")
 #if ENABLE_GLES
 		, m_world_view("mWorldView")
 		, m_texture("mTexture")
@@ -271,6 +275,10 @@ public:
 		// Set world matrix
 		core::matrix4 world = driver->getTransform(video::ETS_WORLD);
 		m_world.set(*reinterpret_cast<float(*)[16]>(world.pointer()), services);
+
+		// Set dynamic light radius
+		extern float light_radius;
+		m_light_radius.set(&light_radius, services);
 
 		// Set clip matrix
 		core::matrix4 worldView;
