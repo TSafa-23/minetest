@@ -81,6 +81,7 @@ ItemDefinition& ItemDefinition::operator=(const ItemDefinition &def)
 	range = def.range;
 	palette_image = def.palette_image;
 	color = def.color;
+	light_radius = def.light_radius;
 	return *this;
 }
 
@@ -120,6 +121,7 @@ void ItemDefinition::reset()
 	range = -1;
 	node_placement_prediction = "";
 	place_param2 = 0;
+	light_radius = 0;
 }
 
 void ItemDefinition::serialize(std::ostream &os, u16 protocol_version) const
@@ -136,6 +138,7 @@ void ItemDefinition::serialize(std::ostream &os, u16 protocol_version) const
 	writeS16(os, stack_max);
 	writeU8(os, usable);
 	writeU8(os, liquids_pointable);
+	writeF32(os, light_radius);
 
 	std::string tool_capabilities_s;
 	if (tool_capabilities) {
@@ -218,6 +221,7 @@ void ItemDefinition::deSerialize(std::istream &is)
 	// If you add anything here, insert it primarily inside the try-catch
 	// block to not need to increase the version.
 	try {
+		light_radius = readF32(is);
 		short_description = deSerializeString16(is);
 
 		place_param2 = readU8(is); // 0 if missing
